@@ -1,0 +1,24 @@
+targets:
+  $default:
+    sources:
+      - lib/**
+      - pubspec.*
+      # Allows the code generator to target files outside of the lib folder
+      - test/**
+      - doc/schema.graphql
+    builders:
+      json_serializable:
+        options:
+          include_if_null: false
+      artemis:
+        options:
+          # fragments_glob: doc/fragment/**.fragment.graphql
+          scalar_mapping:
+            - custom_parser_import: 'package:space_x/util/date_parser.dart'
+              graphql_type: Date
+              dart_type: DateTime
+          schema_mapping:
+            # Групповая генерация
+            - output: lib/repository/launch/request/graphql_api.dart
+              schema: doc/schema.graphql
+              queries_glob: lib/repository/launch/**.graphql
